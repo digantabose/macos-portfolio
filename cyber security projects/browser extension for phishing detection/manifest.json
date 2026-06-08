@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "PhishShield: Advanced Phishing Detector",
+  "version": "1.0.0",
+  "description": "A privacy-first browser extension that detects phishing, typosquatting, and blocks credential leaks using k-Anonymity and local heuristics.",
+  "permissions": [
+    "declarativeNetRequest",
+    "storage",
+    "activeTab",
+    "scripting",
+    "alarms"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background/service_worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content/dom_analyzer.js", "content/credential_guard.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "assets/logo16.png",
+      "32": "assets/logo32.png",
+      "48": "assets/logo48.png",
+      "128": "assets/logo128.png"
+    }
+  },
+  "icons": {
+    "16": "assets/logo16.png",
+    "32": "assets/logo32.png",
+    "48": "assets/logo48.png",
+    "128": "assets/logo128.png"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "block_rules",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none';"
+  }
+}
